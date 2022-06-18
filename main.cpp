@@ -1,5 +1,6 @@
 #include <iostream>
 #include "opencv2/opencv.hpp"
+#include "include/frame_detector.h"
 
 using namespace cv;
 using namespace std;
@@ -21,7 +22,6 @@ void resize(Mat &img, Mat &out, int height, int width, int inter) {
     cv::resize(img, out, dim, 0, 0, inter);
 }
 
-
 int main() {
     VideoCapture cap("/home/khaidong/CLionProjects/frame-detection-cpp/samples/sample vid.mp4");
     if (!cap.isOpened()) {
@@ -31,17 +31,22 @@ int main() {
     distorted_frame = imread("/home/khaidong/CLionProjects/frame-detection-cpp/samples/capture.jpg", IMREAD_GRAYSCALE);
     resize(distorted_frame, distorted_frame, 0, DEFAULT_WIDTH, INTER_LINEAR);
 
+    FrameDetector detector;
+    detector.load_query(distorted_frame);
+
     while (cap.isOpened()) {
         cap >> frame;
         if (frame.empty())
             break;
         cvtColor(frame, frame, COLOR_BGR2GRAY); // convert to grayscale
         resize(frame, frame, 0, DEFAULT_WIDTH, INTER_LINEAR);
-        imshow("frame", frame);
-        char c = (char) waitKey(25);
-        if (c == 27)
-            break;
+        bool detected = detector.detect(frame);
+        if (detected) {
+            cout << "Found similar video frame in image\n";
+            return 0;
+        }
     }
+    cout << "Video does not contain the frame\n";
     cap.release();
     destroyAllWindows();
     return 0;

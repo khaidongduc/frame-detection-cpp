@@ -3,7 +3,7 @@ project(frame_detection_cpp)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(frame_detection_cpp main.cpp)
+add_executable(frame_detection_cpp main.cpp src/frame_detector.cpp include/frame_detector.h)
 
 
 # Find OpenCV, you may need to set OpenCV_DIR variable

@@ -1,5 +1,17 @@
-//
-// Created by khaidong on 6/18/22.
-//
+#include "../include/frame_detector.h"
 
-#include "frame_detector.h"
+
+FrameDetector::FrameDetector() {
+
+}
+
+
+void FrameDetector::load_query(const Mat &query_img) {
+
+}
+
+
+bool FrameDetector::detect(const Mat &img) {
+    return false;
+}
+
