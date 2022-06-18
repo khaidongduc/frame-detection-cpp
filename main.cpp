@@ -28,7 +28,7 @@ int main() {
         cout << "Error opening video stream or file";
     }
     Mat frame, distorted_frame;
-    distorted_frame = imread("/home/khaidong/CLionProjects/frame-detection-cpp/samples/capture.jpg", IMREAD_GRAYSCALE);
+    distorted_frame = imread("/home/khaidong/CLionProjects/frame-detection-cpp/samples/distorted_frame.jpg", IMREAD_GRAYSCALE);
     resize(distorted_frame, distorted_frame, 0, DEFAULT_WIDTH, INTER_LINEAR);
 
     FrameDetector detector;

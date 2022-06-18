@@ -11,6 +11,7 @@ add_executable(frame_detection_cpp main.cpp src/frame_detector.cpp include/frame
 # via the command line or GUI
 find_package(OpenCV REQUIRED)
 
+
 # If the package has been found, several variables will
 # be set, you can find the full list with descriptions
 # in the OpenCVConfig.cmake file.
