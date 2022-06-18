@@ -23,7 +23,6 @@ void resize(Mat &img, Mat &out, int height, int width, int inter) {
 
 
 int main() {
-
     VideoCapture cap("/home/khaidong/CLionProjects/frame-detection-cpp/samples/sample vid.mp4");
     if (!cap.isOpened()) {
         cout << "Error opening video stream or file";
