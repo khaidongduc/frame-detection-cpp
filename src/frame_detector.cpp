@@ -6,7 +6,7 @@
 using namespace cv;
 using namespace std;
 
-const float ratio_thresh = 0.75f;
+const float ratio_thresh = 0.7f;
 const int min_match_count = 30;
 const float homography_area_thresh = 0.4f;
 
@@ -57,12 +57,13 @@ bool FrameDetector::detect(const Mat &object_img) {
         res = object_area_ratio >= homography_area_thresh;
     }
 
-    if (DEBUG) {
-        //-- Draw lines between the corners (the mapped object in the scene - image_2 )
-        Mat img_matches;
-        drawMatches(object_img, object_keypoints, this->scene_img, this->scene_keypoints, good_matches, img_matches,
-                    Scalar::all(-1),
-                    Scalar::all(-1), std::vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
+#ifdef DEBUG_OUTPUT_FOLDER
+    //-- Draw lines between the corners (the mapped object in the scene - image_2 )
+    Mat img_matches;
+    drawMatches(object_img, object_keypoints, this->scene_img, this->scene_keypoints, good_matches, img_matches,
+                Scalar::all(-1),
+                Scalar::all(-1), std::vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
+    if (!scene_corners.empty()) {
         line(img_matches, scene_corners[0] + Point2f((float) object_img.cols, 0),
              scene_corners[1] + Point2f((float) object_img.cols, 0), Scalar(0, 255, 0), 10);
         line(img_matches, scene_corners[1] + Point2f((float) object_img.cols, 0),
@@ -71,9 +72,9 @@ bool FrameDetector::detect(const Mat &object_img) {
              scene_corners[3] + Point2f((float) object_img.cols, 0), Scalar(0, 255, 0), 10);
         line(img_matches, scene_corners[3] + Point2f((float) object_img.cols, 0),
              scene_corners[0] + Point2f((float) object_img.cols, 0), Scalar(0, 255, 0), 10);
-        imshow("Good Matches & Object detection", img_matches);
-        waitKey();
     }
+    imwrite(DEBUG_OUTPUT_FOLDER"/output.jpg", img_matches);
+#endif
 
     return res;
 }

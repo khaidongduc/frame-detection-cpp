@@ -9,7 +9,7 @@ add_executable(frame_detection_cpp main.cpp src/frame_detector.cpp include/frame
 # Find OpenCV, you may need to set OpenCV_DIR variable
 # to the absolute path to the directory containing OpenCVConfig.cmake file
 # via the command line or GUI
-find_package(OpenCV 3.4 REQUIRED)
+find_package(OpenCV 3.4 REQUIRED PATHS PATHS "/usr/local/opt/opencv3")
 
 
 # If the package has been found, several variables will
@@ -21,10 +21,8 @@ message(STATUS "    version: ${OpenCV_VERSION}")
 message(STATUS "    libraries: ${OpenCV_LIBS}")
 message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 
-if(CMAKE_VERSION VERSION_LESS "2.8.11")
-    # Add OpenCV headers location to your include paths
-    include_directories(${OpenCV_INCLUDE_DIRS})
-endif()
+include_directories(${OpenCV_INCLUDE_DIRS})
+
 
 # Link your application with OpenCV libraries
 target_link_libraries(frame_detection_cpp ${OpenCV_LIBS})
