@@ -10,7 +10,7 @@ using namespace cv;
 
 class FrameDetector{
 private:
-    Ptr<Feature2D> orb;
+    Ptr<Feature2D> sift;
     Mat scene_img;
     std::vector<KeyPoint> scene_keypoints;
     Mat scene_descriptors;

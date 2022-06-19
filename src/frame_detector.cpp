@@ -2,23 +2,24 @@
 
 
 #include <opencv2/features2d.hpp>
+#include <opencv2/xfeatures2d.hpp>
 
 using namespace cv;
 using namespace std;
 
-const float ratio_thresh = 0.8f;
-const int min_match_count = 4;
+const float ratio_thresh = 0.75f;
+const int min_match_count = 30;
 const float homography_area_thresh = 0.4f;
 
 FrameDetector::FrameDetector() {
-    this->orb = ORB::create();
+    this->sift = SIFT::create();
 }
 
 
 void FrameDetector::load_scene(const Mat &scene_query) {
     this->scene_img = scene_query;
     // extract key points and descriptor from scene_query
-    orb->detectAndCompute(scene_query, Mat(), this->scene_keypoints, this->scene_descriptors);
+    sift->detectAndCompute(scene_query, Mat(), this->scene_keypoints, this->scene_descriptors);
 }
 
 
@@ -26,12 +27,12 @@ bool FrameDetector::detect(const Mat &object_img) {
     // extract key points and descriptor from object_img
     vector<KeyPoint> object_keypoints;
     Mat object_descriptors;
-    orb->detectAndCompute(object_img, Mat(), object_keypoints, object_descriptors);
+    sift->detectAndCompute(object_img, Mat(), object_keypoints, object_descriptors);
 
     // matching features
-    BFMatcher matcher;
+    FlannBasedMatcher matcher;
     vector<vector<DMatch>> knn_matches;
-    matcher.knnMatch(object_descriptors, scene_descriptors, knn_matches, 2);
+    matcher.knnMatch(object_descriptors, this->scene_descriptors, knn_matches, 2);
     vector<DMatch> good_matches;
     for (auto &knn_match: knn_matches) {
         if (knn_match[0].distance < ratio_thresh * knn_match[1].distance) {
@@ -65,15 +66,13 @@ bool FrameDetector::detect(const Mat &object_img) {
         perspectiveTransform( obj_corners, scene_corners, H);
         //-- Draw lines between the corners (the mapped object in the scene - image_2 )
         line( img_matches, scene_corners[0] + Point2f((float)object_img.cols, 0),
-              scene_corners[1] + Point2f((float)object_img.cols, 0), Scalar(0, 255, 0), 20 );
+              scene_corners[1] + Point2f((float)object_img.cols, 0), Scalar(0, 255, 0), 10 );
         line( img_matches, scene_corners[1] + Point2f((float)object_img.cols, 0),
-              scene_corners[2] + Point2f((float)object_img.cols, 0), Scalar( 0, 255, 0), 20 );
+              scene_corners[2] + Point2f((float)object_img.cols, 0), Scalar( 0, 255, 0), 10 );
         line( img_matches, scene_corners[2] + Point2f((float)object_img.cols, 0),
-              scene_corners[3] + Point2f((float)object_img.cols, 0), Scalar( 0, 255, 0), 20 );
+              scene_corners[3] + Point2f((float)object_img.cols, 0), Scalar( 0, 255, 0), 10 );
         line( img_matches, scene_corners[3] + Point2f((float)object_img.cols, 0),
-              scene_corners[0] + Point2f((float)object_img.cols, 0), Scalar( 0, 255, 0), 20 );
-        //-- Show detected matches
-        imshow("Good Matches & Object detection", img_matches );
+              scene_corners[0] + Point2f((float)object_img.cols, 0), Scalar( 0, 255, 0), 10 );
     }
     imshow("Good Matches & Object detection", img_matches);
     waitKey();
