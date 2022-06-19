@@ -73,6 +73,7 @@ bool FrameDetector::detect(const Mat &object_img) {
               scene_corners[3] + Point2f((float)object_img.cols, 0), Scalar( 0, 255, 0), 10 );
         line( img_matches, scene_corners[3] + Point2f((float)object_img.cols, 0),
               scene_corners[0] + Point2f((float)object_img.cols, 0), Scalar( 0, 255, 0), 10 );
+        res = true;
     }
     imshow("Good Matches & Object detection", img_matches);
     waitKey();
