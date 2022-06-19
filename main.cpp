@@ -32,7 +32,7 @@ int main() {
     resize(distorted_frame, distorted_frame, 0, DEFAULT_WIDTH, INTER_LINEAR);
 
     FrameDetector detector;
-    detector.load_query(distorted_frame);
+    detector.load_scene(distorted_frame);
 
     while (cap.isOpened()) {
         cap >> frame;
