@@ -1,10 +1,8 @@
-#ifndef FRAME_DETECTION_CPP_FRAME_DETECTOR_H
-#define FRAME_DETECTION_CPP_FRAME_DETECTOR_H
-
-#endif //FRAME_DETECTION_CPP_FRAME_DETECTOR_H
+#pragma once
 
 #include <iostream>
 #include "opencv2/opencv.hpp"
+#include "../include/settings.h"
 
 using namespace cv;
 

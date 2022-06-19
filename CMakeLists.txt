@@ -3,13 +3,13 @@ project(frame_detection_cpp)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(frame_detection_cpp main.cpp src/frame_detector.cpp include/frame_detector.h)
+add_executable(frame_detection_cpp main.cpp src/frame_detector.cpp include/frame_detector.h include/settings.h)
 
 
 # Find OpenCV, you may need to set OpenCV_DIR variable
 # to the absolute path to the directory containing OpenCVConfig.cmake file
 # via the command line or GUI
-find_package(OpenCV REQUIRED)
+find_package(OpenCV 3.4 REQUIRED)
 
 
 # If the package has been found, several variables will
